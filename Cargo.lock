@@ -244,6 +244,9 @@ dependencies = [
  "actix-web",
  "diesel",
  "dotenv",
+ "serde",
+ "serde_json",
+ "tokio",
 ]
 
 [[package]]
@@ -458,10 +461,9 @@ dependencies = [
  "bitflags",
  "byteorder",
  "diesel_derives",
- "mysqlclient-sys",
- "percent-encoding",
+ "itoa",
+ "pq-sys",
  "r2d2",
- "url",
 ]
 
 [[package]]
@@ -945,16 +947,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "mysqlclient-sys"
-version = "0.4.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6bbb9b017b98c4cde5802998113e182eecc1ebce8d47e9ea1697b9a623d53870"
-dependencies = [
- "pkg-config",
- "vcpkg",
-]
-
-[[package]]
 name = "num-conv"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1041,6 +1033,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "77957b295656769bb8ad2b6a6b09d897d94f05c41b069aede1fcdaa675eaea04"
 dependencies = [
  "zerocopy",
+]
+
+[[package]]
+name = "pq-sys"
+version = "0.6.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f6cc05d7ea95200187117196eee9edd0644424911821aeb28a18ce60ea0b8793"
+dependencies = [
+ "vcpkg",
 ]
 
 [[package]]
@@ -1372,7 +1373,19 @@ dependencies = [
  "pin-project-lite",
  "signal-hook-registry",
  "socket2",
+ "tokio-macros",
  "windows-sys",
+]
+
+[[package]]
+name = "tokio-macros"
+version = "2.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "693d596312e88961bc67d7f1f97af8a70227d9f90c31bba5806eec004978d752"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
