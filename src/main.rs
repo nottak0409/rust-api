@@ -5,8 +5,6 @@ use dotenv::dotenv;
 use serde::{Deserialize, Serialize};
 use std::env;
 
-use diesel::table;
-
 // Schema definition
 mod schema {
     diesel::table! {
