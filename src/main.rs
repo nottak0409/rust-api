@@ -5,14 +5,20 @@ use dotenv::dotenv;
 use serde::{Deserialize, Serialize};
 use std::env;
 
+use diesel::table;
+
 // Schema definition
-table! {
-    users (id) {
-        id -> Int4,
-        name -> Varchar,
-        email -> Varchar,
+mod schema {
+    diesel::table! {
+        users (id) {
+            id -> Int4,
+            name -> Varchar,
+            email -> Varchar,
+        }
     }
 }
+
+use schema::users;
 
 type DbPool = r2d2::Pool<ConnectionManager<PgConnection>>;
 
@@ -41,12 +47,12 @@ async fn create_user(
     pool: web::Data<DbPool>,
     new_user: web::Json<NewUser>,
 ) -> HttpResponse {
-    let pool = pool.into_inner();
+    let pool= pool.into_inner();
     match pool.get() {
-        Ok(mut conn) => {
+        Ok(mut con ) => {
             match diesel::insert_into(users::table)
                 .values(&new_user.into_inner())
-                .get_result::<User>(&mut conn)
+                .get_result::<User>(&mut con)
             {
                 Ok(user) => HttpResponse::Ok().json(user),
                 Err(e) => {
@@ -78,8 +84,8 @@ async fn main() -> std::io::Result<()> {
         .expect("DATABASE_URL must be set");
 
     // Create db connection pool
-    let manager = ConnectionManager::<PgConnection>::new(database_url);
-    let pool = r2d2::Pool::builder()
+    let manager: ConnectionManager<PgConnection> = ConnectionManager::<PgConnection>::new(database_url);
+    let pool: r2d2::Pool<ConnectionManager<PgConnection>> = r2d2::Pool::builder()
         .build(manager)
         .expect("Failed to create pool.");
 
